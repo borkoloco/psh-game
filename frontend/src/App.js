@@ -1,5 +1,5 @@
 import React from "react";
-import Report from "./components/Report"; // Import the Report component
+import Report from "./components/Report";
 import "./App.css";
 
 function App() {
@@ -9,7 +9,7 @@ function App() {
         <h1>PSh-Game Statistics Report</h1>
       </header>
       <main>
-        <Report /> {/* Include the Report component */}
+        <Report />
       </main>
     </div>
   );
