@@ -116,39 +116,43 @@ const Report = () => {
       <Title>Top 10 Players</Title>
       <LastUpdated>Last updated: {lastUpdated}</LastUpdated>
       <Button onClick={exportCSV}>Export to CSV</Button>
-      <Table>
-        <thead>
-          <tr>
-            <TableHeader>Player Image</TableHeader>
-            <TableHeader>Player ID</TableHeader>
-            <TableHeader>Nickname</TableHeader>
-            <TableHeader>Score</TableHeader>
-            <TableHeader>Creation Date</TableHeader>
-          </tr>
-        </thead>
-        <tbody>
-          {stats.map((stat) => (
-            <TableRow key={stat.player_id}>
-              <TableCell>
-                <PlayerImage
-                  src={
-                    stat.profile_image ||
-                    "https://randomuser.me/api/portraits/men/1.jpg"
-                  }
-                  alt="Player Avatar"
-                  onError={handleImageError}
-                />
-              </TableCell>
-              <TableCell>{stat.player_id}</TableCell>
-              <TableCell>{stat.nickname}</TableCell>
-              <TableCell>{stat.score}</TableCell>
-              <TableCell>
-                {new Date(stat.creation_date).toLocaleString()}
-              </TableCell>
-            </TableRow>
-          ))}
-        </tbody>
-      </Table>
+      {stats.length === 0 ? (
+        <p>No player data available at the moment.</p>
+      ) : (
+        <Table>
+          <thead>
+            <tr>
+              <TableHeader>Player Image</TableHeader>
+              <TableHeader>Player ID</TableHeader>
+              <TableHeader>Nickname</TableHeader>
+              <TableHeader>Score</TableHeader>
+              <TableHeader>Creation Date</TableHeader>
+            </tr>
+          </thead>
+          <tbody>
+            {stats.map((stat) => (
+              <TableRow key={stat.player_id}>
+                <TableCell>
+                  <PlayerImage
+                    src={
+                      stat.profile_image ||
+                      "https://randomuser.me/api/portraits/men/1.jpg"
+                    }
+                    alt="Player Avatar"
+                    onError={handleImageError}
+                  />
+                </TableCell>
+                <TableCell>{stat.player_id}</TableCell>
+                <TableCell>{stat.nickname}</TableCell>
+                <TableCell>{stat.score}</TableCell>
+                <TableCell>
+                  {new Date(stat.creation_date).toLocaleString()}
+                </TableCell>
+              </TableRow>
+            ))}
+          </tbody>
+        </Table>
+      )}
     </ReportWrapper>
   );
 };
