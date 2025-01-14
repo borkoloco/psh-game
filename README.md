@@ -39,8 +39,7 @@ A cron job is used to periodically generate new player statistics. The setup ens
       "score": 99,
       "creation_date": "2025-01-01 12:00:00",
       "profile_image": "https://randomuser.me/api/portraits/men/1.jpg"
-    },
-    ...
+    }
   ],
   "lastUpdated": "2025-01-01 12:00:00"
 }
@@ -68,38 +67,44 @@ The player profile images are fetched from the Random User API and are displayed
 ### Backend Setup
 
 1. Clone the repository:
-   ```
+   ```bash
    git clone <repository-url>
    ```
 2. Navigate to the backend directory:
-   ```
+   ```bash
    cd backend
    ```
-3. Install dependencies:
+3. Create and activate a virtual environment:
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
    ```
+4. Install dependencies:
+   ```bash
    pip install -r requirements.txt
    ```
-4. Run the migrations:
-   ```
+5. Run migrations and start the server:
+   ```bash
+   python manage.py makemigrations
    python manage.py migrate
    ```
-5. Start the Django development server:
-   ```
+6. Start the Django development server:
+   ```bash
    python manage.py runserver
    ```
 
 ### Frontend Setup
 
 1. Navigate to the frontend directory:
-   ```
+   ```bash
    cd frontend
    ```
 2. Install dependencies:
-   ```
+   ```bash
    npm install
    ```
 3. Start the React development server:
-   ```
+   ```bash
    npm start
    ```
 
