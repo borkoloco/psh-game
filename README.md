@@ -1,141 +1,129 @@
-# **PSh-Game**
+# PSh-Game Project
 
-A full-stack application for generating, simulating, and displaying player statistics for an online game. This project includes a React frontend and a Django backend.
+## Overview
 
----
+PSh-Game is an online game statistics dashboard that displays the top 10 players based on their score. It allows users to view the most recent statistics and export the report to a CSV file. The project includes a backend implemented using Django and a frontend built with React.
 
-## **Table of Contents**
+## Features
 
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Setup Instructions](#setup-instructions)
-  - [Backend Setup](#backend-setup)
-  - [Frontend Setup](#frontend-setup)
-- [Usage](#usage)
-- [API Endpoints](#api-endpoints)
+- Display the top 10 players based on their score.
+- Show the last updated time for the report.
+- Export the report to CSV.
+- Automatically simulate new player statistics at regular intervals using a cron job.
 
----
+## Backend (Django)
 
-## **Features**
+The backend is built using Django and Django Rest Framework (DRF) for creating the API that serves player statistics. The backend also integrates with the Random User API to simulate player profiles and scores and stores data on MySQL (credentials should be added to .env file)
 
-- Simulates player stats periodically using a cron-like script.
-- Displays the top 10 players on a dynamic leaderboard.
-- Supports exporting leaderboard data to a CSV file.
-- Backend API for managing player statistics.
-- Responsive and user-friendly frontend design.
+### Key Components
 
----
+- **PlayerStat Model**: Stores player statistics such as player ID, nickname, profile image, score, and creation date.
+- **ReportView API**: Endpoint that returns the top 10 players based on their score.
 
-## **Tech Stack**
+### Cron Job Setup
 
-### **Frontend**
+A cron job is used to periodically generate new player statistics. The setup ensures the job is added only once, and it can be regenerated if needed.
 
-- React
-- Axios (for API requests)
-- Styled-components (for styling)
+1. The cron job setup is managed by the `wsgi.py` and `setup_cron.py` files.
+2. A **flag file** (`.cron_setup_done`) is used to track whether the cron job has already been set up. This ensures the cron job is added only once.
+3. If you need to regenerate the cron job, simply delete the `.cron_setup_done` flag file. The next time the backend starts, the cron job will be recreated.
 
-### **Backend**
+### Example API Response
 
-- Django
-- Django REST Framework
-- MySQL (or your chosen database)
-- Python `schedule` for periodic tasks
+```json
+{
+  "topPlayers": [
+    {
+      "player_id": 1,
+      "nickname": "player1",
+      "score": 99,
+      "creation_date": "2025-01-01 12:00:00",
+      "profile_image": "https://randomuser.me/api/portraits/men/1.jpg"
+    },
+    ...
+  ],
+  "lastUpdated": "2025-01-01 12:00:00"
+}
+```
 
----
+## Frontend (React)
 
-## **Setup Instructions**
+The frontend is a React application that fetches the player statistics and displays them in a table. It also includes a button to export the data to a CSV file.
 
-### **Backend Setup**
+### Key Components
+
+- **Report Component**: Displays the top 10 players and the last updated time.
+- **Export to CSV**: Allows users to download the player statistics as a CSV file.
+
+### Styling
+
+The frontend is styled using **CSS** and Styled-components. The report table and other elements have been styled to make the application more user-friendly.
+
+### Images
+
+The player profile images are fetched from the Random User API and are displayed alongside the player statistics. If an image is unavailable, a default placeholder image will be shown.
+
+## Setup Instructions
+
+### Backend Setup
 
 1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/yourusername/psh-game.git
-   cd psh-game/backend
    ```
-
-2. Create and activate a virtual environment:
-
-   ```bash
-   python3 -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   git clone <repository-url>
    ```
-
+2. Navigate to the backend directory:
+   ```
+   cd backend
+   ```
 3. Install dependencies:
-
-   ```bash
+   ```
    pip install -r requirements.txt
    ```
-
-4. Configure your `.env` file:
-
-   ```plaintext
-   SECRET_KEY=<your-secret-key>
-   DATABASE_URL=<your-database-url>
+4. Run the migrations:
    ```
-
-5. Run migrations and start the server:
-
-   ```bash
-   python manage.py makemigrations
    python manage.py migrate
+   ```
+5. Start the Django development server:
+   ```
    python manage.py runserver
    ```
 
-6. Start the simulation script:
-   ```bash
-   python simulate_stats_script.py
+### Frontend Setup
+
+1. Navigate to the frontend directory:
    ```
-
----
-
-### **Frontend Setup**
-
-1. Navigate to the frontend folder:
-
-   ```bash
-   cd ../frontend
+   cd frontend
    ```
-
 2. Install dependencies:
-
-   ```bash
+   ```
    npm install
    ```
-
-3. Start the development server:
-   ```bash
+3. Start the React development server:
+   ```
    npm start
    ```
 
----
+### Cron Job Setup
 
-## **Usage**
+The cron job is automatically set up when the backend is started for the first time. If you need to regenerate the cron job, delete the `.cron_setup_done` flag file, and the cron job will be recreated.
 
-1. Navigate to the React app at `http://localhost:3000/` to view the leaderboard.
-2. The backend API is available at `http://localhost:8000/api/stats/`.
-3. The simulation script periodically generates new player stats, visible in the frontend.
+## Environment Setup
 
----
+1. Navigate to the backend folder and create a `.env` file with the following content:
 
-## **API Endpoints**
+   ```env
+   DB_NAME=your_database_name
+   DB_USER=your_database_user
+   DB_PASSWORD=your_database_password
+   DB_HOST=your_database_host
+   DB_PORT=your_database_port
+   SECRET_KEY=my_secret_key
+   ```
 
-### **GET /api/stats/**
+   - Replace `your_database_name`, `your_database_user`, `your_database_password`, `your_database_host`, and `your_database_port` with your actual database configuration.
 
-- Retrieves the top 10 players.
-- Example response:
-  ```json
-  {
-    "topPlayers": [
-      {
-        "player_id": 123,
-        "nickname": "PlayerOne",
-        "score": 98,
-        "creation_date": "2025-01-13T12:34:56Z"
-      }
-    ],
-    "lastUpdated": "2025-01-13 12:34:56"
-  }
-  ```
+2. Create a `.env` file in the root of the frontend project (the React app) and add the following:
 
----
+   ```env
+   REACT_APP_API_URL=http://localhost:8000/api/stats/
+   ```

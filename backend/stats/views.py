@@ -13,6 +13,7 @@ class ReportView(APIView):
                 "nickname": player.nickname,
                 "score": player.score,
                 "creation_date": player.creation_date,
+                "profile_image": player.profile_image,
             } for player in top_players],
             "lastUpdated": last_updated
         }

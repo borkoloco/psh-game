@@ -8,7 +8,7 @@ function App() {
       <header className="App-header">
         <h1>PSh-Game Statistics Report</h1>
       </header>
-      <main>
+      <main className="App-main">
         <Report />
       </main>
     </div>

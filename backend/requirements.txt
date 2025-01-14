@@ -6,7 +6,11 @@ django-cors-headers==4.6.0
 djangorestframework==3.15.2
 idna==3.10
 mysqlclient==2.2.7
+python-crontab==3.2.0
+python-dateutil==2.9.0.post0
+python-dotenv==1.0.1
 requests==2.32.3
 schedule==1.2.2
+six==1.17.0
 sqlparse==0.5.3
 urllib3==2.3.0
